@@ -1,11 +1,24 @@
-FROM python:3.6.1
 
-COPY requirements.txt /
-RUN pip install -r ./requirements.txt
+FROM python:3.4
 
-COPY app/ /app/
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+RUN pip install -r requirements.txt
+ADD . /code/
 
-WORKDIR /app
+# ssh
+ENV SSH_PASSWD "root:Docker!"
+RUN apt-get update \
+        && apt-get install -y --no-install-recommends dialog \
+        && apt-get update \
+	&& apt-get install -y --no-install-recommends openssh-server \
+	&& echo "$SSH_PASSWD" | chpasswd 
 
-ENV FLASK_APP=app.py
-CMD flask db upgrade && flask run -h 0.0.0.0 -p 5000
+COPY sshd_config /etc/ssh/
+COPY init.sh /usr/local/bin/
+	
+RUN chmod u+x /usr/local/bin/init.sh
+EXPOSE 5000 2222
+#CMD ["python", "/code/runserver.py"]
+ENTRYPOINT ["init.sh"]
