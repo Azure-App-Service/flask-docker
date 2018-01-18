@@ -20,5 +20,4 @@ COPY init.sh /usr/local/bin/
 	
 RUN chmod u+x /usr/local/bin/init.sh
 EXPOSE 5000 2222
-#CMD ["python", "/code/runserver.py"]
-ENTRYPOINT ["init.sh"]
+ ENTRYPOINT ["init.sh"]
