@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Guest Registration Confirmed{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>You are confirmed!</h1>
+  <p>
+    Name: {{ name }}<br/>
+    Email: {{ email }}<br/>
+    Number of attendees: {{ partysize }}
+  </p>
+  <a href="/">View all attendees</a>
+{% endblock %}
